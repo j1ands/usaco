@@ -15,14 +15,16 @@ class Giver
   //{
     //name = new String(n);
   //}
-  public Giver()
-  {
-    
-  }
+  public Giver() {}
 
   public void setInitialMoney(int money)
   {
     initalMoney = money;
+  }
+
+  public int getInitialMoney()
+  {
+    return initalMoney;
   }
 
   public void receivedMoney(int money)
@@ -59,7 +61,7 @@ class gift1 {
     //String[] people = new String[numPeople];
     //int[] initialMoney = new int[numPeople];
     //Giver[] people = new Giver[numPeople];
-    Hashtable people = new Hashtable();
+    Hashtable<String, Giver> people = new Hashtable<String, Giver>();
 
     StringTokenizer[] nameLines = new StringTokenizer[numPeople];
 
@@ -74,10 +76,55 @@ class gift1 {
 
     StringTokenizer[] giver = new StringTokenizer[numPeople];
     StringTokenizer[] amountAndTo = new StringTokenizer[numPeople];
+    String currGiver;
+    //String currReceip;
+    int giveTo;
+    Giver tempGiver;
+    Giver tempReceip;
+    String receipName;
 
     for(int x = 0; x < numPeople; x++)
     {
+      //out.println(numPeople);
+      giver[x] = new StringTokenizer(f.readLine());
+      currGiver = new String(giver[x].nextToken());
+      amountAndTo[x] = new StringTokenizer(f.readLine());
+      tempGiver = people.get(currGiver);
+      tempGiver.setInitialMoney(Integer.parseInt(amountAndTo[x].nextToken()));
+      //people.get(currGiver).setInitialMoney(Integer.parseInt(amountAndTo[x].nextToken()));
+      giveTo = Integer.parseInt(amountAndTo[x].nextToken());
+      StringTokenizer[] receivers = new StringTokenizer[giveTo];
+        for(int y = 0; y < giveTo; y++)
+        {
+          receivers[y] = new StringTokenizer(f.readLine());
+          receipName = new String(receivers[y].nextToken());
+          //currReceip
+          tempReceip = people.get(receipName);
 
+          if(tempGiver.getInitialMoney() > 0)
+          {
+            tempReceip.receivedMoney(tempGiver.getInitialMoney() / giveTo);
+            people.put(receipName, tempReceip);
+          }
+          //people.get(receivers[y]).receivedMoney(people.get(currGiver).getInitialMoney() / giveTo);
+        }
+        
+        if(tempGiver.getInitialMoney() > 0)
+        {
+          tempGiver.receivedMoney(tempGiver.getInitialMoney() - (giveTo * (tempGiver.getInitialMoney() / giveTo)));
+          people.put(currGiver, tempGiver);
+        }
+      //people.get(currGiver).receivedMoney(people.get(currGiver).initalMoney() - (giveTo * (people.get(currGiver).initalMoney() / giveTo)));
+    }
+    
+    Enumeration names = people.keys();
+    String currName;
+
+    while(names.hasMoreElements())
+    {
+      currName = (String) names.nextElement();
+      tempGiver = people.get(currName);
+      out.println(currName + " " + tempGiver.endMoney());
     }
     //int i2 = Integer.parseInt(st.nextToken());    // second integer
     //out.println(i1+i2);                           // output result
