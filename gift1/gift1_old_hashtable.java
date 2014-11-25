@@ -61,7 +61,7 @@ class gift1 {
     //String[] people = new String[numPeople];
     //int[] initialMoney = new int[numPeople];
     //Giver[] people = new Giver[numPeople];
-    LinkedHashMap<String, Giver> people = new LinkedHashMap<String, Giver>();
+    Hashtable<String, Giver> people = new Hashtable<String, Giver>();
 
     StringTokenizer[] nameLines = new StringTokenizer[numPeople];
 
@@ -117,14 +117,12 @@ class gift1 {
       //people.get(currGiver).receivedMoney(people.get(currGiver).initalMoney() - (giveTo * (people.get(currGiver).initalMoney() / giveTo)));
     }
     
-    Set data = people.entrySet();
-    Iterator i = data.iterator();
+    Enumeration names = people.keys();
     String currName;
 
-    while(i.hasNext())
+    while(names.hasMoreElements())
     {
-      Map.Entry person = (Map.Entry)i.next();
-      currName = (String) person.getKey();
+      currName = (String) names.nextElement();
       tempGiver = people.get(currName);
       out.println(currName + " " + tempGiver.endMoney());
     }
